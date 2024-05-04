@@ -1,0 +1,72 @@
+POST http://localhost:8080/login
+Content-Type: application/x-www-form-urlencoded
+
+username=userb&password=1234
+
+###
+POST http://localhost:8080/logout
+
+###
+POST http://localhost:8080/api/user
+Content-Type: application/json
+
+{
+  "username": "userb",
+  "password": "1234"
+}
+
+###
+DELETE http://localhost:8080/api/user/11
+
+###
+PATCH http://localhost:8080/api/user?username=XDes
+
+###
+PATCH http://localhost:8080/api/user/2?username=XDes123
+
+###
+POST http://localhost:8080/api/post
+Content-Type: application/json
+
+{
+  "text": "Lol u wish23wwewe232323"
+}
+
+###
+DELETE http://localhost:8080/api/post?id=20
+
+###
+GET http://localhost:8080/api/profile/byUsername/usera
+
+###
+GET http://localhost:8080/api/profile/byId/1
+
+###
+GET http://localhost:8080/api/post?id=1
+
+###
+DELETE http://localhost:8080/api/post?id=5
+
+###
+GET http://localhost:8080/api/post/like?id=20
+
+###
+GET http://localhost:8080/api/post/unlike?id=1
+
+###
+GET http://localhost:8080/api/post/comments/12/?offset=0
+
+###
+GET http://localhost:8080/api/post/likes/2/?offset=0
+
+###
+PATCH http://localhost:8080/api/user/password
+Content-Type: application/json
+
+{
+  "userId": 2,
+  "previousPassword": "1234",
+  "newPassword": "4321"
+}
+
+
