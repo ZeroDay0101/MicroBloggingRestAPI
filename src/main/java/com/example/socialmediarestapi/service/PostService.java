@@ -8,15 +8,17 @@ import com.example.socialmediarestapi.model.entity.linkers.PostInteractor;
 import com.example.socialmediarestapi.model.entity.linkers.PostLiker;
 import com.example.socialmediarestapi.repository.PostRepository;
 import com.example.socialmediarestapi.repository.ProfileRepository;
-import com.example.socialmediarestapi.security.UserDetailsImplementation;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Set;
 
 @Service
@@ -24,22 +26,23 @@ import java.util.Set;
 public class PostService {
     private final PostRepository postRepository;
     private final ProfileRepository profileRepository;
-
+    private final JWTService jwtService;
     @PersistenceContext
     private EntityManager entityManager;
 
 
-    public PostService(PostRepository postRepository, ProfileRepository profileRepository) {
+    public PostService(PostRepository postRepository, ProfileRepository profileRepository, JWTService jwtService) {
         this.postRepository = postRepository;
         this.profileRepository = profileRepository;
+        this.jwtService = jwtService;
     }
 
     public void addPost(
             Post post,
-            UsernamePasswordAuthenticationToken principal
-    ) {
+            JwtAuthenticationToken token
+    ) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
 
-        long id = ((UserDetailsImplementation) principal.getPrincipal()).getUserId();
+        long id = jwtService.extractUserId(token.getToken().getTokenValue());
         Profile profile = profileRepository.getReferenceById(id);
 
 
@@ -73,9 +76,10 @@ public class PostService {
 
     public void likePost(
             long postId,
-            UsernamePasswordAuthenticationToken principal
-    ) {
-        long id = ((UserDetailsImplementation) principal.getPrincipal()).getUserId();
+            JwtAuthenticationToken token
+    ) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+        long id = jwtService.extractUserId(token.getToken().getTokenValue());
+
 
         Post post = postRepository.getReferenceById(postId);
         Profile profile = profileRepository.getReferenceById(id);
@@ -91,9 +95,10 @@ public class PostService {
     @Transactional
     public void unlikePost(
             long postId,
-            UsernamePasswordAuthenticationToken principal
-    ) {
-        long id = ((UserDetailsImplementation) principal.getPrincipal()).getUserId();
+            JwtAuthenticationToken token
+    ) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+        long id = jwtService.extractUserId(token.getToken().getTokenValue());
+
 
         Post post = postRepository.getReferenceById(postId);
         Profile profile = profileRepository.getReferenceById(id);

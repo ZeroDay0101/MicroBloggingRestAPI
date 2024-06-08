@@ -14,9 +14,9 @@ import java.util.Optional;
  */
 @NoRepositoryBean
 public interface UsernameJpaRepository<D, I> extends JpaRepository<D, I> {
-    public Optional<D> findByUsername(String username);
+    Optional<D> findByUsername(String username);
 
-    public Optional<List<D>> findAllByUsername(String username);
+    Optional<List<D>> findAllByUsername(String username);
 
 
 }

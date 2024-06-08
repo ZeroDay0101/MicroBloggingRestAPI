@@ -7,15 +7,19 @@ import com.example.socialmediarestapi.dto.profile.SimpleProfileDTO;
 import com.example.socialmediarestapi.mappers.PostMapper;
 import com.example.socialmediarestapi.mappers.ProfileMapper;
 import com.example.socialmediarestapi.model.entity.Post;
-import com.example.socialmediarestapi.security.UserDetailsImplementation;
+import com.example.socialmediarestapi.security.authentication.UserDetailsImplementation;
 import com.example.socialmediarestapi.service.PostService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.security.Principal;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Set;
 
 @RestController
@@ -37,16 +41,21 @@ public class PostController {
     public ResponseEntity<Void> addPost(
             @RequestBody PostCreationDTO postCreationDTO,
             Principal principal
-    ) {
+            , Authentication authentication
+    ) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
         Post post = postMapper.postCreationDTOToEntity(postCreationDTO);
 
-        postService.addPost(post, (UsernamePasswordAuthenticationToken) principal);
+        postService.addPost(post, (JwtAuthenticationToken) principal);
 
         return ResponseEntity.ok().body(null);
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> deletePost(@RequestParam long id) {
+    public ResponseEntity<Void> deletePost(
+            @RequestParam long id,
+            Authentication authentication
+    ) {
+
         Post post = postService.getPost(id);
         if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN")) || ((UserDetailsImplementation) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId() == post.getPostCreator().getId()) {
             postService.deletePost(postService.getPost(id));
@@ -79,8 +88,8 @@ public class PostController {
     public ResponseEntity<Void> likePost(
             @RequestParam long id,
             Principal principal
-    ) {
-        postService.likePost(id, (UsernamePasswordAuthenticationToken) principal);
+    ) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+        postService.likePost(id, (JwtAuthenticationToken) principal);
 
         return ResponseEntity.ok().body(null);
     }
@@ -90,8 +99,8 @@ public class PostController {
     public ResponseEntity<Void> unlikePost(
             @RequestParam long id,
             Principal principal
-    ) {
-        postService.unlikePost(id, (UsernamePasswordAuthenticationToken) principal);
+    ) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+        postService.unlikePost(id, (JwtAuthenticationToken) principal);
 
         return ResponseEntity.ok().body(null);
     }

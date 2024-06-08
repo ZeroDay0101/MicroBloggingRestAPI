@@ -17,7 +17,6 @@ import java.util.List;
 @Transactional
 public class UserService {
     private final UserRepository userRepository;
-
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
