@@ -20,3 +20,5 @@ You ought to generate your own keys if you're to use this code in your own proje
 
 Public key should be in X509 format and Private key should be in PKCS8 with headers just like in example files. 
 
+To make this api work, expose database in cofigured default url jdbc:mysql://localhost:3306/SocialMedia or change it to yours in application.properties
+
