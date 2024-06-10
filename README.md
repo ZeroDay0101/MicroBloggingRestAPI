@@ -22,10 +22,6 @@ Public key should be in X509 format and Private key should be in PKCS8 with head
 
 Endpoints:
 
-|                 Logs user in                  | POST|
-|:---------------------------------------------:| 
-| Exchanges user refresh token for access token |
-
 |                  Log user in                  |  POST  |                  /login                  |
 |:---------------------------------------------:|:------:|:----------------------------------------:|
 | Exchange user refresh token for access token  |  POST  |           /login/refresh_token           |
