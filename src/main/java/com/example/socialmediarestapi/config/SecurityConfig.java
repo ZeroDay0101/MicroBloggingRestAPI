@@ -131,12 +131,14 @@ public class SecurityConfig {
             new AntPathRequestMatcher("/login"),
             new AntPathRequestMatcher("/login/refresh_token"),
             new AntPathRequestMatcher("/api/user", "POST"),
-            new AntPathRequestMatcher("/logout")
+            new AntPathRequestMatcher("/logout"),
+            new AntPathRequestMatcher("/token")
     ));
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return
-                http.csrf(AbstractHttpConfigurer::disable)
+                http
+                        .csrf(AbstractHttpConfigurer::disable)
                         .authorizeHttpRequests(httpS -> httpS
                                 .requestMatchers(allowedEndpoints.toArray(new RequestMatcher[0])).permitAll()
                                 .anyRequest().authenticated())

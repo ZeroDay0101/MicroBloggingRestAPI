@@ -8,6 +8,7 @@ import com.example.socialmediarestapi.mappers.PostMapper;
 import com.example.socialmediarestapi.mappers.ProfileMapper;
 import com.example.socialmediarestapi.model.entity.Post;
 import com.example.socialmediarestapi.security.authentication.UserDetailsImplementation;
+import com.example.socialmediarestapi.service.JWTService;
 import com.example.socialmediarestapi.service.PostService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -30,10 +31,13 @@ public class PostController {
 
     private final ProfileMapper profileMapper;
 
-    public PostController(PostService postService, PostMapper postMapper, ProfileMapper profileMapper) {
+    private final JWTService jwtService;
+
+    public PostController(PostService postService, PostMapper postMapper, ProfileMapper profileMapper, JWTService jwtService) {
         this.postService = postService;
         this.postMapper = postMapper;
         this.profileMapper = profileMapper;
+        this.jwtService = jwtService;
     }
 
 
@@ -41,7 +45,6 @@ public class PostController {
     public ResponseEntity<Void> addPost(
             @RequestBody PostCreationDTO postCreationDTO,
             Principal principal
-            , Authentication authentication
     ) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
         Post post = postMapper.postCreationDTOToEntity(postCreationDTO);
 
@@ -54,10 +57,10 @@ public class PostController {
     public ResponseEntity<Void> deletePost(
             @RequestParam long id,
             Authentication authentication
-    ) {
+    ) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
 
         Post post = postService.getPost(id);
-        if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN")) || ((UserDetailsImplementation) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId() == post.getPostCreator().getId()) {
+        if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN")) || jwtService.extractUserId(((JwtAuthenticationToken) authentication).getToken().getTokenValue()) == post.getPostCreator().getId()) {
             postService.deletePost(postService.getPost(id));
             return ResponseEntity.ok().body(null);
         } else {

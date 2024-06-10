@@ -69,11 +69,10 @@ public class UserController {
 
 
         String tokenValue = ((JwtAuthenticationToken) authentication).getToken().getTokenValue();
-        String username = jwtService.extractUsername(tokenValue);
 
         long userId = jwtService.extractUserId(tokenValue);
 
-        userService.changeUserName(username, userId);
+        userService.changeUserName(newUsername, userId);
 
         return ResponseEntity.ok().body(null);
     }
