@@ -20,6 +20,8 @@ You ought to generate your own keys if you're to use this code in your own proje
 
 Public key should be in X509 format and Private key should be in PKCS8 with headers just like in example files.
 
+To make this api work, expose database in cofigured default url jdbc:mysql://localhost:3306/SocialMedia or change it to yours in application.properties
+
 |                  Log user in                  |  POST  |                  /login                  |
 |:---------------------------------------------:|:------:|:----------------------------------------:|
 | Exchange user refresh token for access token  |  POST  |           /login/refresh_token           |
@@ -39,7 +41,4 @@ Public key should be in X509 format and Private key should be in PKCS8 with head
 | Change username (Of currently logged in user) | PATCH  |          /api/user?newUsername=          |
 |          Change username by user id           | PATCH  |       /api/user/?newUsername=/{id}       |
 |             Change user password              | PATCH  |            /api/user/password            |
-=======
-To make this api work, expose database in cofigured default url jdbc:mysql://localhost:3306/SocialMedia or change it to yours in application.properties
 
->>>>>>> origin/master
