@@ -10,7 +10,7 @@ Username and password login
 
 Roles and additional functionality for admins
 
-Sql database
+PostgreSQL database
 
 etc.
 
@@ -40,9 +40,8 @@ Public key should be in X509 format and Private key should be in PKCS8 with head
 | Change username (Of currently logged in user) | PATCH  |          /api/user?newUsername=          |
 |          Change username by user id           | PATCH  |       /api/user/?newUsername=/{id}       |
 |             Change user password              | PATCH  |            /api/user/password            |
-=======
+
 To make this api work, expose database in cofigured default url jdbc:postgresql://localhost:5432/SocialMedia or change it to yours in application.properties
 username=postgres
 password=1234
 
->>>>>>> origin/master
