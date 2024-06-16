@@ -8,7 +8,6 @@ import org.springframework.security.oauth2.jwt.Jwt;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 
 public class JWTGrantedAuthoritiesConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
     @Override

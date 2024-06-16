@@ -25,6 +25,7 @@ public abstract class PostMapper {
     @Mapping(source = "referencedPostId", target = "referencedPost", qualifiedByName = "getReferencedPost")
     public abstract Post postCreationDTOToEntity(PostCreationDTO postCreationDTO);
 
+
     public abstract Set<PostDTO> postToPostDTOList(Set<Post> post);
 
     @Mapping(target = "profileId", expression = "java(post.getPostCreator().getId())")
@@ -46,5 +47,6 @@ public abstract class PostMapper {
                 () -> new PostNotFoundException(referencedPostId)
         );
     }
+
 
 }

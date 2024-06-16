@@ -2,12 +2,12 @@ package com.example.socialmediarestapi.controller;
 
 import com.example.socialmediarestapi.dto.post.PostCreationDTO;
 import com.example.socialmediarestapi.dto.post.PostDTO;
+import com.example.socialmediarestapi.dto.post.PostEditDTO;
 import com.example.socialmediarestapi.dto.post.SimplePostDTO;
 import com.example.socialmediarestapi.dto.profile.SimpleProfileDTO;
 import com.example.socialmediarestapi.mappers.PostMapper;
 import com.example.socialmediarestapi.mappers.ProfileMapper;
 import com.example.socialmediarestapi.model.entity.Post;
-import com.example.socialmediarestapi.security.authentication.UserDetailsImplementation;
 import com.example.socialmediarestapi.service.JWTService;
 import com.example.socialmediarestapi.service.PostService;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +15,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -52,6 +53,16 @@ public class PostController {
 
         return ResponseEntity.ok().body(null);
     }
+
+    @PatchMapping()
+    public ResponseEntity<Void> editPost(
+            @RequestBody PostEditDTO postEditDTO
+    ) {
+        postService.editPost(postEditDTO.getPostId(), postEditDTO.getEditedPostText());
+
+        return ResponseEntity.ok().body(null);
+    }
+
 
     @DeleteMapping
     public ResponseEntity<Void> deletePost(
@@ -126,6 +137,13 @@ public class PostController {
     ) {
         Set<SimpleProfileDTO> profileDTOs = profileMapper.profileToSimpleProfileDTOList(postService.getPostLikers(id, offset)).toSet();
         return ResponseEntity.ok(profileDTOs);
+    }
+
+    @GetMapping("/XD/{id}")
+    public String getUserById(@PathVariable Long id, Model model) {
+        Post post = postService.getPost(id);
+        model.addAttribute("post", post); // Adding user object to the model
+        return "postXD"; // Returns the view name
     }
 
 }

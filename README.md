@@ -24,6 +24,7 @@ Public key should be in X509 format and Private key should be in PKCS8 with head
 |:---------------------------------------------:|:------:|:----------------------------------------:|
 | Exchange user refresh token for access token  |  POST  |           /login/refresh_token           |
 |                   Add post                    |  POST  |                /api/post                 |
+|                   Edit post                   | PATCH  |                /api/post                 |
 |               Delete post by id               | DELETE |              /api/post?id=               |
 |                Get post by id                 |  GET   |              /api/post?id=               |
 |           Get all posts by user id            |  GET   |         /api/post/byProfile?id=          |
@@ -40,6 +41,8 @@ Public key should be in X509 format and Private key should be in PKCS8 with head
 |          Change username by user id           | PATCH  |       /api/user/?newUsername=/{id}       |
 |             Change user password              | PATCH  |            /api/user/password            |
 =======
-To make this api work, expose database in cofigured default url jdbc:mysql://localhost:3306/SocialMedia or change it to yours in application.properties
+To make this api work, expose database in cofigured default url jdbc:postgresql://localhost:5432/SocialMedia or change it to yours in application.properties
+username=postgres
+password=1234
 
 >>>>>>> origin/master

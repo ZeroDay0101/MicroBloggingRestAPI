@@ -48,6 +48,13 @@ import java.util.*;
 @EnableMethodSecurity
 public class SecurityConfig {
 
+    public static List<RequestMatcher> allowedEndpoints = new ArrayList<>(Arrays.asList(
+            new AntPathRequestMatcher("/login"),
+            new AntPathRequestMatcher("/login/refresh_token"),
+            new AntPathRequestMatcher("/api/user", "POST"),
+            new AntPathRequestMatcher("/logout"),
+            new AntPathRequestMatcher("/token")
+    ));
     private final AuthenticationConfiguration config;
     private final JWTService jwtService;
     private final UserRepository userRepository;
@@ -127,13 +134,7 @@ public class SecurityConfig {
 
         auth.authenticationProvider(daoAuthenticationProvider);
     }
-    public static List<RequestMatcher> allowedEndpoints = new ArrayList<>(Arrays.asList(
-            new AntPathRequestMatcher("/login"),
-            new AntPathRequestMatcher("/login/refresh_token"),
-            new AntPathRequestMatcher("/api/user", "POST"),
-            new AntPathRequestMatcher("/logout"),
-            new AntPathRequestMatcher("/token")
-    ));
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return

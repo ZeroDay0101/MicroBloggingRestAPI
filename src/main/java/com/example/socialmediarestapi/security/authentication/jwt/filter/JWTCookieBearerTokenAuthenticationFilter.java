@@ -1,7 +1,6 @@
 package com.example.socialmediarestapi.security.authentication.jwt.filter;
 
 import com.example.socialmediarestapi.config.SecurityConfig;
-import com.example.socialmediarestapi.exception.CookieNotFoundException;
 import com.example.socialmediarestapi.utills.CookieUtills;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -31,14 +30,14 @@ public class JWTCookieBearerTokenAuthenticationFilter extends OncePerRequestFilt
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-            //Skip this filter for allowed endpoints
-            if (SecurityConfig.allowedEndpoints.stream().anyMatch(requestMatcher -> requestMatcher.matches(request))) {
-                doFilter(request, response, filterChain);
-                return;
-            }
+        //Skip this filter for allowed endpoints
+        if (SecurityConfig.allowedEndpoints.stream().anyMatch(requestMatcher -> requestMatcher.matches(request))) {
+            doFilter(request, response, filterChain);
+            return;
+        }
 
 
-        String  token = CookieUtills.getCookieValue(request, "access_token");
+        String token = CookieUtills.getCookieValue(request, "access_token");
         BearerTokenAuthenticationToken bearerTokenAuthenticationToken = new BearerTokenAuthenticationToken(token);
 
 

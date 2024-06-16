@@ -1,7 +1,22 @@
-POST http://localhost:8080/login
-Content-Type: application/x-www-form-urlencoded
+GET http://localhost:8080/api/post/XD/1
 
-username=userb&password=1234
+###
+GET http://localhost:8080/token
+
+###
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+  "username": "usera",
+  "password": "1234"
+}
+
+###
+POST http://localhost:8080/login/refresh_token
+
+
+###
 
 ###
 POST http://localhost:8080/logout
@@ -11,7 +26,7 @@ POST http://localhost:8080/api/user
 Content-Type: application/json
 
 {
-  "username": "userb",
+  "username": "usera",
   "password": "1234"
 }
 
@@ -19,21 +34,31 @@ Content-Type: application/json
 DELETE http://localhost:8080/api/user/11
 
 ###
-PATCH http://localhost:8080/api/user?username=XDes
+PATCH http://localhost:8080/api/user?newUsername=newUsername
 
 ###
-PATCH http://localhost:8080/api/user/2?username=XDes123
+PATCH http://localhost:8080/api/user/4?username=newUsername
 
 ###
 POST http://localhost:8080/api/post
 Content-Type: application/json
+X-Csrf-Token: ChVrEuSXzgHF02lCJmweFdPFIWiwaJgfG6nrp5_kt53zUHEsbC1Sd4Hx
 
 {
-  "text": "Lol u wish23wwewe232323"
+  "text": "Example comment"
 }
 
 ###
-DELETE http://localhost:8080/api/post?id=20
+PATCH http://localhost:8080/api/post
+Content-Type: application/json
+
+{
+  "postId": 1,
+  "editedPostText": "Example comment"
+}
+
+###
+DELETE http://localhost:8080/api/post?id=4
 
 ###
 GET http://localhost:8080/api/profile/byUsername/usera
@@ -45,26 +70,26 @@ GET http://localhost:8080/api/profile/byId/1
 GET http://localhost:8080/api/post?id=1
 
 ###
-DELETE http://localhost:8080/api/post?id=5
+DELETE http://localhost:8080/api/post?id=4
 
 ###
-GET http://localhost:8080/api/post/like?id=20
+GET http://localhost:8080/api/post/like?id=1
 
 ###
 GET http://localhost:8080/api/post/unlike?id=1
 
 ###
-GET http://localhost:8080/api/post/comments/12/?offset=0
+GET http://localhost:8080/api/post/comments/1/?offset=0
 
 ###
-GET http://localhost:8080/api/post/likes/2/?offset=0
+GET http://localhost:8080/api/post/likes/1/?offset=0
 
 ###
 PATCH http://localhost:8080/api/user/password
 Content-Type: application/json
 
 {
-  "userId": 2,
+  "userId": 1,
   "previousPassword": "1234",
   "newPassword": "4321"
 }

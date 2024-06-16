@@ -52,6 +52,12 @@ public class PostService {
         postRepository.saveAndFlush(post);
     }
 
+    public void editPost(long postId, String editedText) {
+        Post post = postRepository.getReferenceById(postId);
+
+        post.setText(editedText);
+    }
+
     public void deletePost(Post post) {
         postRepository.delete(post);
     }
