@@ -1,47 +1,104 @@
-Spring boot simple rest api for micro-blogging with functionality like:
+# 📝 Micro-Blogging REST API (Spring Boot)
 
-Creating and deleting users and profiles
+This is a simple Spring Boot REST API for a micro-blogging platform. It supports basic social features such as posting, liking, commenting, and user management with authentication and authorization.
 
-Creating and deleting posts
+---
 
-Interacting with posts (like and comment)
+## 🔧 Features
 
-Username and password login
+- ✅ Create, update, and delete **users** and **profiles**
+- 📝 Create, update, and delete **posts**
+- ❤️ Like and comment on posts
+- 🔐 JWT-based **authentication**
+- 👤 Role-based access (**Admin** functionality)
+- 💾 PostgreSQL database integration
+- 🔑 JWT signing with encryption keys (customizable)
 
-Roles and additional functionality for admins
+---
 
-PostgreSQL database
+## 🚀 API Endpoints
 
-etc.
+### 🔑 Authentication Endpoints
 
-Encryption keys for signing jwt in directory src\main\resources\encryptionKeys are only example ones and are visible to everyone.
+| Method | Endpoint                     | Description                          |
+|--------|------------------------------|--------------------------------------|
+| POST   | `/login`                     | Log user in                          |
+| POST   | `/login/refresh_token`       | Refresh access token using refresh token |
 
-You ought to generate your own keys if you're to use this code in your own project  
+### 📬 Post Endpoints
 
-Public key should be in X509 format and Private key should be in PKCS8 with headers just like in example files.
+| Method | Endpoint                          | Description                |
+|--------|-----------------------------------|----------------------------|
+| POST   | `/api/post`                       | Add a new post             |
+| PATCH  | `/api/post`                       | Edit an existing post      |
+| DELETE | `/api/post?id={id}`               | Delete post by ID          |
+| GET    | `/api/post?id={id}`               | Get post by ID             |
+| GET    | `/api/post/byProfile?id={userId}` | Get all posts by user ID   |
+| POST   | `/api/post/like?id={postId}`      | Like a post                |
+| POST   | `/api/post/unlike?id={postId}`    | Remove like from a post    |
+| GET    | `/api/post/comments/{id}/offset={offset}` | Get comments for a post |
+| GET    | `/api/post/likes/{id}/offset={offset}`    | Get likes for a post    |
 
-|                  Log user in                  |  POST  |                  /login                  |
-|:---------------------------------------------:|:------:|:----------------------------------------:|
-| Exchange user refresh token for access token  |  POST  |           /login/refresh_token           |
-|                   Add post                    |  POST  |                /api/post                 |
-|                   Edit post                   | PATCH  |                /api/post                 |
-|               Delete post by id               | DELETE |              /api/post?id=               |
-|                Get post by id                 |  GET   |              /api/post?id=               |
-|           Get all posts by user id            |  GET   |         /api/post/byProfile?id=          |
-|                   Like post                   |  POST  |            /api/post/like?id=            |
-|             Remove like from post             |  POST  |           /api/post/unlike?id=           |
-|            Get comments by post id            |  GET   |     /api/post/comments/{id}/offset=?     |
-|             Get likes by post id              |  GET   |      /api/post/likes/{id}/offset=?       |
-|            Get profile by username            |  GET   |    /api/profile/byUsername/{username}    |
-|               Get profile by id               |  GET   |          /api/profile/byId/{id}          |
-|          Get profile id by username           |  GET   | /api/profile/getId/byUsername/{username} |
-|                  Create user                  |  POST  |                /api/user                 |
-|                  Delete user                  | DELETE |              /api/user/{id}              |
-| Change username (Of currently logged in user) | PATCH  |          /api/user?newUsername=          |
-|          Change username by user id           | PATCH  |       /api/user/?newUsername=/{id}       |
-|             Change user password              | PATCH  |            /api/user/password            |
+### 👤 Profile Endpoints
 
-To make this api work, expose database in cofigured default url jdbc:postgresql://localhost:5432/SocialMedia or change it to yours in application.properties
-username=postgres
-password=1234
+| Method | Endpoint                                           | Description                 |
+|--------|----------------------------------------------------|-----------------------------|
+| GET    | `/api/profile/byUsername/{username}`              | Get profile by username     |
+| GET    | `/api/profile/byId/{id}`                          | Get profile by ID           |
+| GET    | `/api/profile/getId/byUsername/{username}`        | Get profile ID by username  |
 
+### 👥 User Endpoints
+
+| Method | Endpoint                                | Description                            |
+|--------|-----------------------------------------|----------------------------------------|
+| POST   | `/api/user`                             | Create a new user                      |
+| DELETE | `/api/user/{id}`                        | Delete user by ID                      |
+| PATCH  | `/api/user?newUsername={newUsername}`   | Change username (logged-in user)       |
+| PATCH  | `/api/user/?newUsername={newUsername}/{id}` | Change username by user ID        |
+| PATCH  | `/api/user/password`                    | Change user password                   |
+
+---
+
+## 🛠 Configuration
+
+### PostgreSQL Setup
+
+Ensure your PostgreSQL database is available at the following default URL:
+
+```
+jdbc:postgresql://localhost:5432/SocialMedia
+```
+
+Or update the connection settings in `application.properties`:
+
+```
+spring.datasource.url=jdbc:postgresql://localhost:5432/SocialMedia
+spring.datasource.username=postgres
+spring.datasource.password=1234
+```
+
+---
+
+## 🔐 JWT Encryption Keys
+
+Sample encryption keys are located at:  
+`src/main/resources/encryptionKeys`
+
+**⚠️ WARNING:** These sample keys are public and should **not** be used in production.
+
+To secure your application:
+
+1. Generate your own key pair.
+2. Store the public key in **X.509** format.
+3. Store the private key in **PKCS#8** format, both with proper headers.
+
+Example header formats:
+```
+-----BEGIN PUBLIC KEY-----
+...your public key...
+-----END PUBLIC KEY-----
+
+-----BEGIN PRIVATE KEY-----
+...your private key...
+-----END PRIVATE KEY-----
+```
