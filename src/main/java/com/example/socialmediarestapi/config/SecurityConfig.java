@@ -27,7 +27,9 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationProvider;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.context.DelegatingSecurityContextRepository;
@@ -47,21 +49,20 @@ import java.util.*;
 @Configuration
 @EnableMethodSecurity
 public class SecurityConfig {
-
     public static List<RequestMatcher> allowedEndpoints = new ArrayList<>(Arrays.asList(
-            new AntPathRequestMatcher("/login"),
+                new AntPathRequestMatcher("/login"),
             new AntPathRequestMatcher("/login/refresh_token"),
             new AntPathRequestMatcher("/api/user", "POST"),
             new AntPathRequestMatcher("/logout"),
             new AntPathRequestMatcher("/token")
     ));
+
     private final AuthenticationConfiguration config;
     private final JWTService jwtService;
     private final UserRepository userRepository;
     public JwtDecoder decoder = new JwtDecoder() {
         @Override
         public Jwt decode(String token) throws JwtException {
-
             try {
                 jwtService.checkJWTValidity(token);
             } catch (IOException | NoSuchAlgorithmException | InvalidKeySpecException e) {
@@ -175,6 +176,11 @@ public class SecurityConfig {
                 new RequestAttributeSecurityContextRepository(),
                 new HttpSessionSecurityContextRepository()
         );
+    }
+
+    @Bean
+    public AuthenticationEntryPoint authenticationEntryPoint() {
+        return new LoginUrlAuthenticationEntryPoint("/login");
     }
 
 }

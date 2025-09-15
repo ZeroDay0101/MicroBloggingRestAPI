@@ -1,8 +1,11 @@
 package com.example.socialmediarestapi.utills;
 
+import org.springframework.core.io.ClassPathResource;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
@@ -15,10 +18,12 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
 public class RsaKeyUtills {
-    public static RSAPublicKey readX509PublicKey(File file) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
-        String publicKeyString = new String(Files.readAllBytes(file.toPath()), Charset.defaultCharset());
+    public static RSAPublicKey readX509PublicKey(String keyDir) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+        ClassPathResource resource = new ClassPathResource(keyDir);
+        String publicKeyString = new String(resource.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
 
-        // Remove the "BEGIN" and "END" lines and any whitespace
+
+            // Remove the "BEGIN" and "END" lines and any whitespace
         String publicKeyPEM = publicKeyString
                 .replace("-----BEGIN PUBLIC KEY-----", "")
                 .replace("-----END PUBLIC KEY-----", "")
@@ -39,8 +44,9 @@ public class RsaKeyUtills {
         return (RSAPublicKey) publicKey;
     }
 
-    public static RSAPrivateKey readPKCS8PrivateKey(File file) throws Exception {
-        String key = new String(Files.readAllBytes(file.toPath()), Charset.defaultCharset());
+    public static RSAPrivateKey readPKCS8PrivateKey(String keyDir) throws Exception {
+        ClassPathResource resource = new ClassPathResource(keyDir);
+        String key = new String(resource.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
 
         String privateKeyPEM = key
                 .replace("-----BEGIN RSA PRIVATE KEY-----", "")

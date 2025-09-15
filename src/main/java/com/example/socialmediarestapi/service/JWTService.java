@@ -101,11 +101,11 @@ public class JWTService {
     }
 
     private PublicKey getPublicKey() throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
-        return RsaKeyUtills.readX509PublicKey(new File("src/main/resources/encryptionKeys/jwtPublicKey.key"));
+        return RsaKeyUtills.readX509PublicKey("encryptionKeys/jwtPublicKey.key");
     }
 
     private PrivateKey getPrivateKey() throws Exception {
-        return RsaKeyUtills.readPKCS8PrivateKey(new File("src/main/resources/encryptionKeys/jwtPrivateKey.key"));
+        return RsaKeyUtills.readPKCS8PrivateKey("encryptionKeys/jwtPrivateKey.key");
 
     }
 }

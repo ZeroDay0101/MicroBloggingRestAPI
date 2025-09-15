@@ -58,7 +58,7 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:8080/api/post?id=4
+DELETE http://localhost:8080/api/post?id=1
 
 ###
 GET http://localhost:8080/api/profile/byUsername/usera
@@ -93,5 +93,18 @@ Content-Type: application/json
   "previousPassword": "1234",
   "newPassword": "4321"
 }
+###
+POST http://localhost:8080/api/post/like?id=1
+###
+POST http://localhost:8080/api/post
+Content-Type: application/json
+X-Csrf-Token: ChVrEuSXzgHF02lCJmweFdPFIWiwaJgfG6nrp5_kt53zUHEsbC1Sd4Hx
+
+{
+  "text": "Example comment to other comment",
+  "referencedPostId": 1
+}
+
+
 
 
