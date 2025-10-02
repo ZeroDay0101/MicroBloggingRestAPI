@@ -71,7 +71,7 @@ docker-compose up --build
 
 ## 🔐 JWT Encryption Keys
 
-Sample encryption keys are located at:  
+Encryption keys used for jwt are located at:  
 `src/main/resources/encryptionKeys`
 
 **⚠️ WARNING:** The keys inside the project are sample and should not be used in production.
