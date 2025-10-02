@@ -19,10 +19,12 @@ This is a simple Spring Boot REST API for a micro-blogging platform. It supports
 
 The project is fully Dockerized, including PostgreSQL. You can build and run everything with one command.
 1. Clone the repository
-2. Run with Docker Compose
+2. Package into a jar
+3. Run with Docker Compose
 ``` bash
 git clone https://github.com/ZeroDay0101/MicroBloggingRestAPI.git
 cd MicroBloggingRestAPI
+mvn clean package
 docker-compose up --build
 ```
 ---
@@ -76,7 +78,11 @@ Encryption keys used for jwt are located at:
 
 **⚠️ WARNING:** The keys inside the project are sample and should not be used in production.
 
-To secure your application, generate your own key pair.
+To secure your application, generate your own key pair:
+
+1. The public key in **X.509** format.
+
+2. The private key in **PKCS#8** format, both with proper headers.
 
 Header formats:
 ```
