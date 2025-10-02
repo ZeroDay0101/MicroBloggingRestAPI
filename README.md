@@ -15,7 +15,19 @@ This is a simple Spring Boot REST API for a micro-blogging platform. It supports
 - 🔑 JWT signing with encryption keys (customizable)
 
 ---
+## 🐳 Running with Docker
 
+The project is fully Dockerized, including PostgreSQL. You can build and run everything with one command.
+1. Clone the repository
+2. Package into a jar
+3. Run with Docker Compose
+``` bash
+git clone https://github.com/ZeroDay0101/MicroBloggingRestAPI.git
+cd MicroBloggingRestAPI
+mvn clean package
+docker-compose up --build
+```
+---
 ## 🚀 API Endpoints
 
 ### 🔑 Authentication Endpoints
@@ -59,40 +71,20 @@ This is a simple Spring Boot REST API for a micro-blogging platform. It supports
 
 ---
 
-## 🛠 Configuration
-
-### PostgreSQL Setup
-
-Ensure your PostgreSQL database is available at the following default URL:
-
-```
-jdbc:postgresql://localhost:5432/SocialMedia
-```
-
-Or update the connection settings in `application.properties`:
-
-```
-spring.datasource.url=jdbc:postgresql://localhost:5432/SocialMedia
-spring.datasource.username=postgres
-spring.datasource.password=1234
-```
-
----
-
 ## 🔐 JWT Encryption Keys
 
-Sample encryption keys are located at:  
+Encryption keys used for jwt are located at:  
 `src/main/resources/encryptionKeys`
 
-**⚠️ WARNING:** These sample keys are public and should **not** be used in production.
+**⚠️ WARNING:** The keys inside the project are sample and should not be used in production.
 
-To secure your application:
+To secure your application, generate your own key pair:
 
-1. Generate your own key pair.
-2. Store the public key in **X.509** format.
-3. Store the private key in **PKCS#8** format, both with proper headers.
+1. The public key in **X.509** format.
 
-Example header formats:
+2. The private key in **PKCS#8** format, both with proper headers.
+
+Header formats:
 ```
 -----BEGIN PUBLIC KEY-----
 ...your public key...
@@ -102,3 +94,23 @@ Example header formats:
 ...your private key...
 -----END PRIVATE KEY-----
 ```
+---
+## 🛠 Configuration
+Spring Boot API → http://localhost:8080
+
+PostgreSQL (host machine) → localhost:5433
+
+👉 Database data persists in the Docker volume postgres_data.
+
+Default environment variables (from docker-compose.yml):
+
+
+Spring Boot connects using:
+
+    spring.datasource.url=jdbc:postgresql://postgres:5432/SocialMediaDB
+    spring.datasource.username=postgres
+    spring.datasource.password=1234
+
+You can change these in docker-compose.yml and application.properties.
+
+If ur running with maven and not docker you must create the db manually and change credentials accordingly.
