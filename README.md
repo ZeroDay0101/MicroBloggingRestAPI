@@ -24,7 +24,6 @@ The project is fully Dockerized, including PostgreSQL. You can build and run eve
 ``` bash
 git clone https://github.com/ZeroDay0101/MicroBloggingRestAPI.git
 cd MicroBloggingRestAPI
-mvn clean package
 docker-compose up --build
 ```
 ---
@@ -113,4 +112,4 @@ Spring Boot connects using:
 
 You can change these in docker-compose.yml and application.properties.
 
-If ur running with maven and not docker you must create the db manually and change credentials accordingly.
+If you're running with maven and not docker you must create the db manually and change credentials accordingly.
